@@ -15,6 +15,7 @@ class Match:
         self.monster_data = {'player': player_monsters, 'opponent': opponent_monsters} 
         self.end_match = end_match
         self.NPC = NPC
+        self.can_catch = self.NPC is None
         # segregate the dictionaries for the player and opponent monsters in one central dictionary for easy access
 
         self.match_sprites = MatchSprites() # a group for when changes need to be made to both the player and opponent monsters automatically, saving time
@@ -78,7 +79,7 @@ class Match:
             keys = pygame.key.get_just_pressed()
 
             if self.selection_mode == 'general_index':
-                limiter = len(BATTLE_CHOICES['full']) 
+                limiter = len(BATTLE_CHOICES['full'] if self.can_catch else BATTLE_CHOICES['limited'])
                 # if in general selection mode, limit to number of general options which is length of BATTLE_CHOICES['full']
             if self.selection_mode == 'available_moves_index':
                 limiter = len(self.current_active_monster.monster.get_abilities(all_wanted = False))
@@ -236,7 +237,8 @@ class Match:
             self.display_surface.blit(target_icon, icon_rect)
 
     def draw_general(self):
-        for index, (option, data_dict) in enumerate(BATTLE_CHOICES['full'].items()): # get each option and its data dictionary
+        choices = BATTLE_CHOICES['full'] if self.can_catch else BATTLE_CHOICES['limited'] # less options allowed if monster cannot be caught
+        for index, (option, data_dict) in enumerate(choices.items()): # get each option and its data dictionary
             if index == self.indexes['general_index']: # check if the current option is the selected one
                 surf = self.monster_frames['ui'][f"{data_dict['icon']}_highlight"] # search the active icon frames from the ui frames
             else:
@@ -339,7 +341,7 @@ class Match:
                     # huge weighting if there is a move that instantly can defeat a player monster
 
                     # factoring in type advantages
-                    score = (predicted_damage + knockout_bonus * type_multiplier) - cost_penalty # score for this move
+                    score = ((predicted_damage + knockout_bonus) * type_multiplier) - cost_penalty # score for this move
 
                     if score > best_score: # if this move is better than what we have currently stored for the best_ability, then this is the new best choice
                         best_score = score
@@ -365,7 +367,7 @@ class Match:
                              # made hover color for title white so visually, color doesn't change when mouse moves over it
             self.title.update(self.display_surface)
             self.description.update(self.display_surface)
-            self.end_match(self.NPC)
+            self.end_match(self.NPC, won = True)
 
         # user has been defeated
         if len(self.player_sprites) == 0:
@@ -379,7 +381,7 @@ class Match:
                             (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2), "YOU LOST!", self.fonts['title'], COLORS['white'], COLORS['white'], COLORS['black'], 3)
                              # made hover color for title white so visually, color doesn't change when mouse moves over it
             self.title.update(self.display_surface)
-            self.end_match(self.NPC)
+            self.end_match(self.NPC, won = False)
 
     def update(self, dt): # actually update the screen for changes to be visible
         self.input()

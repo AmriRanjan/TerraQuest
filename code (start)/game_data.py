@@ -9,7 +9,7 @@ TRAINER_DATA = {
 		'biome': 'forest'
 		},
 	'o2': {
-		'monsters': {0: ('Vyperion', 14), 1: ('Chuchu', 15), 2: ('Purphant', 13), 3: ('Emberdrill', 13)},
+		'monsters': {0: ('Vyperion', 29), 1: ('Chuchu', 30), 2: ('Emberdrill', 36)},
 		'dialog': {
 			'default': ['I don\'t like sand', 'It\'s coarse and rough', 'oh god, fight'], 
 			'defeated': ['May the force be with you']},
@@ -18,7 +18,7 @@ TRAINER_DATA = {
 		'biome': 'sand'
 		},
 	'o3': {
-		'monsters': {0: ('Vyperion', 14), 1: ('Chuchu', 15), 2: ('Purphant', 13), 3: ('Emberdrill', 13)},
+		'monsters': {0: ('Vyperion', 30), 1: ('Chuchu', 36), 2: ('Purphant', 32)},
 		'dialog': {
 			'default': ['I love skating!', 'FIGHT!'], 
 			'defeated': ['Good luck with the boss', 'It\'s no mean feat']},
@@ -27,7 +27,7 @@ TRAINER_DATA = {
 		'biome': 'sand'
 		},
 	'o4': {
-		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Vyperion',24), 3: ('Poseidra', 30)},
+		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 30), 2: ('Vyperion', 38)},
 		'dialog': {
 			'default': ['I love problem-solving!', 'FIGHT!'], 
 			'defeated': ['Good luck with the boss', 'It\'s so scary in here']},
@@ -36,7 +36,7 @@ TRAINER_DATA = {
 		'biome': 'forest'
 		},
 	'o5': {
-		'monsters': {0: ('Leafee', 20), 1: ('Purrvine', 22), 2: ('Vyperion',24), 3: ('Chuchu', 19)},
+		'monsters': {0: ('Leafee', 28), 1: ('Purrvine', 30), 2: ('Vyperion', 32)},
 		'dialog': {
 			'default': ['I love battling!', 'FIGHT!'], 
 			'defeated': ['Good luck with the boss', 'You\'ll need it']},
@@ -54,7 +54,7 @@ TRAINER_DATA = {
 		'biome': 'ice'
 		},
 	'o7': {
-		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Vyperion',24), 3: ('Poseidra', 30)},
+		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 28), 2: ('Poseidra', 32)},
 		'dialog': {
 			'default': ['There are no bugs in the snow!'], 
 			'defeated': ['Maybe I should check out a volcano...', 'It\'s so cold in here']},
@@ -63,7 +63,7 @@ TRAINER_DATA = {
 		'biome': 'ice'
 		},
 	'p1': {
-		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Vyperion',24), 3: ('Poseidra', 30)},
+		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 29), 2: ('Solgalium', 33)},
 		'dialog': {
 			'default': ['I love trees', 'and fights'], 
 			'defeated': ['Good luck with the boss!']},
@@ -72,7 +72,7 @@ TRAINER_DATA = {
 		'biome': 'forest'
 		},
 	'p2': {
-		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Vyperion',24), 3: ('Poseidra', 30)},
+		'monsters': {0: ('Beluin', 20), 1: ('Vyperion', 24), 2: ('Poseidra', 30)},
 		'dialog': {
 			'default': ['I love nature', 'and fights'], 
 			'defeated': ['Good luck with the boss!']},
@@ -81,7 +81,7 @@ TRAINER_DATA = {
 		'biome': 'forest'
 		},
 	'p3': {
-		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Vyperion',24), 3: ('Poseidra', 30)},
+		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Vyperion', 24)},
 		'dialog': {
 			'default': ['I love bugs', 'and fights'], 
 			'defeated': ['Good luck with the boss!']},
@@ -90,7 +90,7 @@ TRAINER_DATA = {
 		'biome': 'forest'
 		},
 	'p4': {
-		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Vyperion',24), 3: ('Poseidra', 30)},
+		'monsters': {0: ('Beluin', 20), 1: ('Vyperion', 24), 2: ('Jacana', 50)},
 		'dialog': {
 			'default': ['I love a challenge', 'so fight!'], 
 			'defeated': ['Good luck with the boss!']},
@@ -99,7 +99,7 @@ TRAINER_DATA = {
 		'biome': 'forest'
 		},
 	'px': {
-		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Vyperion',24), 3: ('Poseidra', 30)},
+		'monsters': {0: ('Cleaf', 25), 1: ('Fintail', 15), 2: ('Vyperion', 30)},
 		'dialog': {
 			'default': ['I love strategy', 'and fights'], 
 			'defeated': ['Good luck with the boss!']},
@@ -108,7 +108,7 @@ TRAINER_DATA = {
 		'biome': 'forest'
 		},
 	'w1': {
-		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Purphant',24), 3: ('Poseidra', 30)},
+		'monsters': {0: ('Solgalium', 36), 1: ('Beluin', 20), 2: ('Purphant', 24)},
 		'dialog': {
 			'default': ['It\'s so cold in here', 'maybe a fight will warm me up'], 
 			'defeated': ['Good luck with the boss!']},
@@ -117,7 +117,7 @@ TRAINER_DATA = {
 		'biome': 'ice'
 		},
 	'w2': {
-		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Purphant',24), 3: ('Poseidra', 30)},
+		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Purphant', 24)},
 		'dialog': {
 			'default': ['It\'s so lonely', 'I\'ve spent all my time analysing you'], 
 			'defeated': ['Good luck with the boss!']},
@@ -126,7 +126,7 @@ TRAINER_DATA = {
 		'biome': 'ice'
 		},
 	'w3': {
-		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Purphant',24), 3: ('Poseidra', 30)},
+		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Poseidra', 30)},
 		'dialog': {
 			'default': ['It\'s so intimidating in here', 'maybe a fight will calm me down'], 
 			'defeated': ['Good luck with the boss!']},
@@ -135,7 +135,7 @@ TRAINER_DATA = {
 		'biome': 'ice'
 		},
 	'w4': {
-		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Purphant',24), 3: ('Poseidra', 30)},
+		'monsters': {0: ('Volcario', 29), 1: ('Fintail', 19), 2: ('Purphant', 34)},
 		'dialog': {
 			'default': ['It\'s really is so cold in here', 'but analytical-thinking never takes a break'], 
 			'defeated': ['Good luck with the boss!']},
@@ -144,7 +144,7 @@ TRAINER_DATA = {
 		'biome': 'ice'
 		},
 	'w5': {
-		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Purphant',24), 3: ('Poseidra', 30)},
+		'monsters': {0: ('Jacana', 25), 1: ('Beluin', 20), 2: ('Chuchu', 40)},
 		'dialog': {
 			'default': ['So you\'re the one we heard about', 'a round!'], 
 			'defeated': ['Good luck with the boss!']},
@@ -153,73 +153,73 @@ TRAINER_DATA = {
 		'biome': 'ice'
 		},
 	'wx': {
-		'monsters': {0: ('Glacifox', 25), 1: ('Beluin', 20), 2: ('Purphant',24), 3: ('Poseidra', 30)},
+		'monsters': {0: ('Glacifox', 38), 1: ('Poseidra', 36), 2: ('Purphant', 29)},
 		'dialog': {
 			'default': ['Honestly, this place feels kinda warm...', 'you\'re no match for me!'], 
-			'defeated': ['Congratultions!']},
+			'defeated': ['Congratulations!']},
 		'directions': ['down'],
 		'defeated': False,
 		'biome': 'ice'
 		},
 	'f1': {
-		'monsters': {0: ('Emberdrill', 15), 1: ('Jacana', 20), 2: ('Purphant',24), 3: ('Vyperion', 30)},
+		'monsters': {0: ('Emberdrill', 27), 1: ('Jacana', 27), 2: ('Vyperion', 30)},
 		'dialog': {
 			'default': ['This place feels kinda warm...', 'fight!'], 
-			'defeated': ['Congratultions!']},
+			'defeated': ['Congratulations!']},
 		'directions': ['right'],
 		'defeated': False,
 		'biome': 'sand'
 		},
 	'f2': {
-		'monsters': {0: ('Emberdrill', 15), 1: ('Jacana', 20), 2: ('Purphant',24), 3: ('Vyperion', 30)},
+		'monsters': {0: ('Sparkadillo', 20), 1: ('Jacana', 20), 2: ('Purphant', 24)},
 		'dialog': {
 			'default': ['I\'m burning', 'fight!'], 
-			'defeated': ['Congratultions!']},
+			'defeated': ['Congratulations!']},
 		'directions': ['right', 'left'],
 		'defeated': False,
 		'biome': 'sand'
 		},
 	'f3': {
-		'monsters': {0: ('Emberdrill', 15), 1: ('Jacana', 20), 2: ('Purphant',24), 3: ('Vyperion', 30)},
+		'monsters': {0: ('Volcario', 30), 1: ('Jacana', 30), 2: ('Purphant', 30)},
 		'dialog': {
 			'default': ['There are snakes and monsters hiding in the sand', 'a match!'], 
-			'defeated': ['Congratultions!']},
+			'defeated': ['Congratulations!']},
 		'directions': ['right', 'left'],
 		'defeated': False,
 		'biome': 'sand'
 		},
 	'f4': {
-		'monsters': {0: ('Emberdrill', 15), 1: ('Jacana', 20), 2: ('Purphant',24), 3: ('Vyperion', 30)},
+		'monsters': {0: ('Jacana', 30), 1: ('Sparkadillo', 29), 2: ('Vyperion', 30)},
 		'dialog': {
 			'default': ['This place is getting to me...', 'fight!'], 
-			'defeated': ['Congratultions!']},
+			'defeated': ['Congratulations!']},
 		'directions': ['up', 'right'],
 		'defeated': False,
 		'biome': 'sand'
 		},
 	'f5': {
-		'monsters': {0: ('Emberdrill', 15), 1: ('Jacana', 20), 2: ('Purphant',24), 3: ('Vyperion', 30)},
+		'monsters': {0: ('Chuchu', 27), 1: ('Volcario', 33), 2: ('Purrvine', 30)},
 		'dialog': {
 			'default': ['This place is the perfect place to improve', 'but I won\'t go easy!'], 
-			'defeated': ['Congratultions!']},
+			'defeated': ['Congratulations!']},
 		'directions': ['left'],
 		'defeated': False,
 		'biome': 'sand'
 		},
 	'f6': {
-		'monsters': {0: ('Emberdrill', 15), 1: ('Jacana', 20), 2: ('Purphant',24), 3: ('Vyperion', 30)},
+		'monsters': {0: ('Poseidra', 34), 1: ('Budlet', 20), 2: ('Sparkadillo', 30)},
 		'dialog': {
 			'default': ['Say, what method are you going to use', 'it won\'t help', 'a round!'], 
-			'defeated': ['Congratultion!']},
+			'defeated': ['Congratulations!']},
 		'directions': ['right'],
 		'defeated': False,
 		'biome': 'sand'
 		},
 	'fx': {
-		'monsters': {0: ('Emberdrill', 15), 1: ('Jacana', 20), 2: ('Purphant',24), 3: ('Vyperion', 30)},
+		'monsters': {0: ('Volcario', 40), 1: ('Solgalium', 40), 2: ('Poseidra', 40)},
 		'dialog': {
 			'default': ['Time to bring the heat', 'fight!'], 
-			'defeated': ['Congratultion!']},
+			'defeated': ['Congratulations!']},
 		'directions': ['down'],
 		'defeated': False,
 		'biome': 'sand'

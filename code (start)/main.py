@@ -629,15 +629,17 @@ class Game:
             self.player.unblock()
             character.in_dialog = False # signals to program that the player is no longer in a dialog sequence and that the NPCs can move again
 
-    def end_match(self, character):
+    def end_match(self, character, won):
         self.transition_target_properties = 'overworld'
         self.tint_mode = 'tint'
-        if character:
-            character.trainer_data['defeated'] = True
-            self.create_dialog(character)
-        else:
+        if character: # if done fighting a character
+            if won:
+                character.trainer_data['defeated'] = True
+                self.create_dialog(character)
+            else: # lost
+                self.player.unblock() # just unblock
+        else: # if done fighting in a wild encounter
             self.player.unblock()
-
 
     def check_grass(self):
         if [sprite for sprite in self.grass_sprites if sprite.rect.colliderect(self.player.hitbox)] and not self.match and self.player.direction:
@@ -653,7 +655,7 @@ class Game:
             opponent_monsters = {index:Monster(monster, sprites[0].level) for index, monster in enumerate(sprites[0].monsters)}
             self.transition_target_properties = Match(self.player_monsters, opponent_monsters, self.monster_frames, 
                                                       self.match_bg_frames[sprites[0].biome], self.fonts, self.end_match, None)
-        self.tint_mode = 'tint' # begin the transition into the match
+            self.tint_mode = 'tint' # begin the transition into the match
 
 # main game loop
 if __name__ == '__main__':
