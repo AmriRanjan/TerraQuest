@@ -22,7 +22,8 @@ class Game:
     def __init__(self):
         pygame.init()
 
-        db = Database() # creates database tables
+        self.db = Database() # creates database tables
+        self.userid = None
 
         # setting up screen and display using settings.py constants
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -85,7 +86,7 @@ class Game:
         self.battle_animations_on = "HIGH"
         self.midway_settings = False
 
-        # monsters
+        # monsters 
         self.player_monsters = { 
             0: Monster('Volcario', 30),
             1: Monster('Glacifox', 29),
@@ -183,7 +184,7 @@ class Game:
                 button.update(self.display_surface)
 
             elapsed_time = pygame.time.get_ticks() - start_timer
-            if elapsed_time > 5000: # after 5 seconds, switch to play screen
+            if elapsed_time > 10000: # after 5 seconds, switch to play screen
                 return self.loading() # return used to fully break out of this loop, preventing infinite loops when switching between screens
 
             # event loop constantly run in this screen to check for quit or button clicks
@@ -197,6 +198,34 @@ class Game:
                         self.main_menu()
                     if self.cog_button.checkForInput(mouse_pos):
                         self.settings()
+                    if create_button.checkForInput(mouse_pos):
+                        
+                        exists = self.db.user_exists(username_textbox.text)
+                        if not exists:
+                            self.db.register(username_textbox.text, password_textbox.text)
+                            # green text saying registered!
+                        else:
+                            pass
+                            # text saying account exists
+                        
+                    if login_button.checkForInput(mouse_pos):
+                        login_status = self.db.login(username_textbox.text, password_textbox.text)
+                        if login_status == True:
+                            # login works text
+                            self.username = username_textbox.text
+                            self.userid = self.db.get_userid(username_textbox.text)
+                            
+                            trainers_defeated = self.db.get_trainers_defeated(self.userid)
+                            # ["w0","u1","u2"]
+
+                            for trainer in trainers_defeated:
+                                TRAINER_DATA.get(trainer,[])
+                            
+                            
+                            self.loading()
+                        else:
+                            pass
+                            # say login dont work
 
             # update and check the input of all Textbox objects
             username_textbox.check_input(events)

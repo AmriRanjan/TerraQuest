@@ -2,18 +2,22 @@ import sqlite3
 import hashlib
 import os
 
-
 class Database():
     def __init__(self):
-        self.make_tables()
+        self.make_tables() # ensure tables exist as soon as Database object is created
 
     def connect(self):
+        # open a connection to the sqlite 3 database file
         self.connection = sqlite3.connect("code (start)/TerraQuestDB.db")
         self.cursor = self.connection.cursor()
+        # allow foreign keys to work by stating syntax PRAGMA
         self.cursor.execute("PRAGMA foreign_keys = ON;")
 
     def make_tables(self):
+        # create all database tables if they do not already exist by opening connection with our database file
         self.connect()
+
+        # the users table
         self.cursor.execute("""
 
             CREATE TABLE IF NOT EXISTS users (
@@ -25,17 +29,19 @@ class Database():
                         
         """)
 
+        # the trainers table
         self.cursor.execute("""
 
             CREATE TABLE IF NOT EXISTS trainers (
                 user_id INTEGER NOT NULL,
-                trainer_id INTEGER NOT NULL,
+                trainer_id TEXT NOT NULL,
                 PRIMARY KEY (user_id,trainer_id),
                 FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
             );
                         
         """)
 
+        # the monsters table and ON DELETE CASCADE ensures monsters are deleted if user is removed for relational integrity
         self.cursor.execute("""
 
             CREATE TABLE IF NOT EXISTS monsters (
@@ -49,10 +55,10 @@ class Database():
                         
         """)
 
-
         self.close_connection()
     
     def close_connection(self):
+        # whenever this is called, save any changes to the DB and close the connection fully with cursor
         self.connection.commit()
         self.cursor.close()
         self.connection.close()
@@ -60,35 +66,44 @@ class Database():
     # USER queries
 
     def user_exists(self,username):
+        # a method to check if the user already exists by the username
         self.connect()
-        self.cursor.execute("SELECT 1 FROM users WHERE username = ? LIMIT 1", (username))
-        row = self.cursor.fetchone()
-        self.close_connection()
-        return row is not None
-    
-    def register(self,username,password):
-        hash_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
-        self.connect()
-        self.cursor.execute("INSERT INTO users (username,password_hash, score) VALUES (?,?,0)", (username,hash_password))
-        user_id = self.cursor.lastrowid
-        self.close_connection()
-        return int(user_id)
-    
-    def login(self,username, password):
-        pw_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
-        self.connect()
-        self.cursor.execute("SELECT password_hash FROM users WHERE username=?",(username))
+        self.cursor.execute("SELECT 1 FROM users WHERE username = ? LIMIT 1", (username,))
         row = self.cursor.fetchone()
         self.close_connection()
 
+        # returns True if a matching username was found
+        return row is not None
+    
+    def register(self,username,password):
+        # hash the password before it is stored by applying the hash library's sha256 algorithm
+        hash_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
+        self.connect()
+        self.cursor.execute("INSERT INTO users (username,password_hash, score) VALUES (?,?,0)", (username,hash_password))
+        # user_id = self.cursor.lastrowid # the last row is the new user_id
+        self.close_connection()
+        return
+    
+    def login(self,username, password):
+        # verify login by comparing hash values
+        pw_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
+        self.connect()
+        self.cursor.execute("SELECT password_hash FROM users WHERE username=?",(username,))
+        row = self.cursor.fetchone()
+        self.close_connection()
+
+        # if the username doesn't exist, login fails
         if row is None:
             return False
+        
+        # else, we return the result of comparing the stored_hash of this username and password account with the entered details
         stored_hash = row[0]
         return stored_hash == pw_hash
 
     def get_userid(self, username):
+        # retrieve the user's unique ID using their username
         self.connect() 
-        self.cursor.execute("SELECT user_id FROM users WHERE username=?", (username))
+        self.cursor.execute("SELECT user_id FROM users WHERE username=?", (username,))
         row = self.cursor.fetchone()
         self.close_connection()
         return int(row[0]) if row else None
@@ -96,133 +111,67 @@ class Database():
     def get_score(self,username):
         # Grabs user's score
         self.connect()
-        self.cursor.execute("SELECT score from users WHERE username=?",(username))
+        self.cursor.execute("SELECT score from users WHERE username=?",(username,))
         row = self.cursor.fetchone()
         self.close_connection()
         return int(row[0]) if row else None
 
     def update_score(self,username,new_score):
-        # Updates user's score
+        # Updates user's score after battles or events
         self.connect()
         self.cursor.execute("UPDATE users SET score = ? WHERE username = ?", (new_score, username))    
         self.close_connection()
 
     def get_leaderboard(self,limit):
-        # Grabs top scores
+        # Grabs top scores and orders them descending
+        # limits the results by 10
         self.connect()
-        self.cursor.execute("SELECT username, score FROM users ORDER BY score desc, username ASC LIMIT ? ", (limit))
+        self.cursor.execute("SELECT username, score FROM users ORDER BY score desc, username ASC LIMIT ?", (limit,))
         rows = self.cursor.fetchall()
         self.close_connection()
+
         return rows
     
     
     # TRAINER queries:
 
-    
-    
+    def add_defeated_trainer(self,user_id, trainer_id):
+        self.connect()
+        self.cursor.execute("INSERT OR IGNORE INTO trainers (user_id,trainer_id) VALUES (?,?)", (user_id,trainer_id))
+        self.close_connection()
+
+
+    def get_trainers_defeated(self, user_id):
+        self.connect()
+        self.cursor.execute("SELECT trainer_id FROM trainers WHERE user_id = ? ORDER BY trainer_id", (user_id,))
+        rows = self.cursor.fetchall()
+        self.close_connection()
+        return [r[0] for r in rows]
+
 
     # MONSTER queries
 
     def add_monster(self, user_id, name, level, xp):
+        # add monsters linked to specific user
         self.connect()
-        self.cursor.execute("INSERT INTO MONSTERS (user_id,name,level,xp), VALUES (?,?,?,?)", (user_id,name,level,xp))
+        self.cursor.execute("INSERT INTO MONSTERS (user_id,name,level,xp) VALUES (?,?,?,?)", (user_id,name,level,xp))
+
+        # store the monster's unique ID for future updates
         monster_id = self.cursor.lastrowid
         self.close_connection()
         return int(monster_id)
     
     def get_monsters(self,user_id):
+        # retrieve all the monsters owned by a user
+        # order them to ensure consistent display
         self.connect()
-        self.cursor.execute("SELECT monster_id, name, level, xp FROM MONSTERS WHERE user_id = ? ORDER BY monster_id", (user_id))
+        self.cursor.execute("SELECT monster_id, name, level, xp FROM MONSTERS WHERE user_id = ? ORDER BY monster_id", (user_id,))
         rows = self.cursor.fetchall()
         self.close_connection()
         return rows
     
     def update_monster(self, monster_id, level, xp):
+        # update a unique monster's level and experience after matches
         self.connect()
         self.cursor.execute("UPDATE monsters SET level = ?, xp = ? WHERE monster_id = ?", (level, xp, monster_id))
         self.close_connection()
-
-
-# class database():
-#     def __init__(self):
-#         self.create_table() 
-
-#     def open_connection(self):
-#         self.sqlite_connection = sqlite3.connect("Bat Rush/Code/BatRushLDB.db")
-#         self.cursor = self.sqlite_connection.cursor() # Obtains the SQL cursor
-
-#     def close_connection(self):
-#         self.cursor.close()
-#         self.sqlite_connection.close()
-
-#     def create_table(self):
-#         self.open_connection() # Open connection 
-#         self.cursor.execute("CREATE TABLE IF NOT EXISTS LEADERBOARD(UserID INTEGER PRIMARY key AUTOINCREMENT,username VARCHAR(255),pass VARCHAR(255),score INTEGER DEFAULT 0);")
-#         self.close_connection() # Close connection
-
-#     def insert(self, user_name, password, score):
-#         self.open_connection()
-#         self.cursor.execute("Insert into LEADERBOARD VALUES (?,?, ?, ?)", (None,user_name,password,score)) # Insert username, password and score
-#         self.sqlite_connection.commit() # Ensure changes save
-#         self.close_connection()
-    
-
-#     def display(self):
-#         self.open_connection()
-#         self.cursor.execute("Select * from LEADERBOARD")
-#         result = self.cursor.fetchall() 
-#         for row in result: # Iterate through each row returned
-#             print(row)
-#             print("\n")
-#         self.close_connection()
-
-#     def login(self, username, password):
-#         if self.username_exists(username): # Check user is already logged in
-#             return False
-#         self.open_connection()
-#         query = ("Select pass from LEADERBOARD WHERE username = ?")
-#         param = (username,)
-#         self.cursor.execute(query,param) # Pass query and parameter to execute
-#         stored_password = self.cursor.fetchone()[0] # Fetch first data item (the password)
-#         self.close_connection()
-#         if stored_password == hashlib.sha256(password.encode()).hexdigest():
-#             return True
-#         else:
-#             return False
-        
-#     def fetch_score(self,username):
-#         self.open_connection()
-#         query = "Select score from LEADERBOARD WHERE username = ?"
-#         param = (username,)
-#         self.cursor.execute(query,param)
-#         score = self.cursor.fetchone()[0] # Select first data item (the score)
-#         self.close_connection()
-#         return score
-
-#     def username_exists(self, username):
-#         self.open_connection()
-#         query = "Select COUNT(username) from LEADERBOARD WHERE username = ?"
-#         param = (username,) 
-#         self.cursor.execute(query,param)
-#         count = self.cursor.fetchone()[0] # Obtain no. of common usernames
-#         self.close_connection()
-#         if count == 0: # If username is unique
-#             return True
-#         else:
-#             return False
-        
-#     def update_score(self,score,username):
-#         self.open_connection()
-#         query = "Update LEADERBOARD set score = ? WHERE username = ?"
-#         self.cursor.execute(query,(score,username))
-#         self.sqlite_connection.commit() # Ensure changes are saved
-#         self.close_connection()
-#         return score
-    
-#     def fetch_LDBdata(self):
-#         self.open_connection()
-#         query = "Select username, score from LEADERBOARD ORDER BY score desc"
-#         self.cursor.execute(query)
-#         result = self.cursor.fetchall()
-#         self.close_connection()
-#         return result
