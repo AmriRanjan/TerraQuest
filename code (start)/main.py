@@ -12,6 +12,7 @@ from monster import Monster
 from index import MonsterIndex
 from match import Match
 from timer import Timer
+from textbox import Textbox
 
 from support import *
 
@@ -103,32 +104,87 @@ class Game:
 
     def signup(self):
 
+        # gave input type of 'username' for username checks to occur for this object
+        username_textbox = Textbox(self.display_surface, WINDOW_WIDTH//2 - 500, WINDOW_HEIGHT//2 - 40, self.fonts, 'username')
+        # gave input type of 'password' for password checks to occur for this object
+        password_textbox = Textbox(self.display_surface, WINDOW_WIDTH//2 - 500, WINDOW_HEIGHT//2 + 120, self.fonts, 'password')
         start_timer = pygame.time.get_ticks() # get the current time in milliseconds
 
         while True:
-            elapsed_time = pygame.time.get_ticks() - start_timer
-            if elapsed_time > 5000: # after 5 seconds, switch to play screen
-                return self.loading() # return used to fully break out of this loop, preventing infinite loops when switching between screens
-
             mouse_pos = pygame.mouse.get_pos()
+            self.display_surface.blit(self.bg,(0,0))
 
-            self.display_surface.fill(COLORS['black']) # fill display surface with black color to clear previous screen and make it seem as if new screen created
-            # draw text onto display surface to indicate which screen this is (temporary placeholder)
-            signup_surf = self.get_font(80).render("This is the \n SIGN UP screen", True, COLORS['white'])
-            signup_rect = signup_surf.get_rect(center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2))
-            self.display_surface.blit(signup_surf, signup_rect)
+            # draw sign up title text onto display surface with outline
+            sign_up_text = Button(None, 
+                                (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 5.5), "SIGN UP", self.get_font(125),
+                                  COLORS['white'], COLORS['white'], COLORS['black'], 3) # made hover color for settings text white so visually, 
+                                  # color doesn't change when mouse moves over it
 
             # create back button to return to main menu from this screen and update it so it still has hover effects like normal buttons
             signup_back_button = Button(pygame.transform.scale(pygame.image.load("graphics/ui/button.png").convert_alpha(), (200, 60)), (105,35), 
                                       "BACK", self.get_font(50), COLORS['white'], COLORS['light-gray'], COLORS['black'], 2)
+        
+            # create back button to return to main menu from this screen and update it so it still has hover effects like normal buttons
+            create_button = Button(pygame.transform.scale(pygame.image.load("graphics/ui/button.png").convert_alpha(), (200, 60)), 
+                                    (WINDOW_WIDTH // 2 - 460, WINDOW_HEIGHT // 2 + 250), "CREATE", self.get_font(44), 
+                                    COLORS['white'], COLORS['light-gray'], COLORS['black'], 2)    
+
+            login_button = Button(pygame.transform.scale(pygame.image.load("graphics/ui/button.png").convert_alpha(), (200, 60)), 
+                                    (WINDOW_WIDTH // 2 - 200, WINDOW_HEIGHT // 2 + 250), "LOGIN", self.get_font(44), 
+                                    COLORS['white'], COLORS['light-gray'], COLORS['black'], 2)    
             
+            # draw username tag above position of username_textbox with outline
+            username_label = Button(None,
+                                    (WINDOW_WIDTH // 2 - 325, WINDOW_HEIGHT // 2 - 80), "USERNAME", self.get_font(64), 
+                                    COLORS['white'], COLORS['white'], COLORS['black'], 2) # # made hover color for settings text white so visually, 
+                                  # color doesn't change when mouse moves over it
+
+            # draw password tag below position of username elements with outline
+            password_label = Button(None,
+                                    (WINDOW_WIDTH // 2 - 325, WINDOW_HEIGHT // 2 + 80), "PASSWORD", self.get_font(64), 
+                                    COLORS['white'], COLORS['white'], COLORS['black'], 2) # # made hover color for settings text white so visually, 
+                                  # color doesn't change when mouse moves over it
+            
+            # draw rules tag right of textboxes with outline
+            checklist_label = Button(None,
+                                    (WINDOW_WIDTH // 2 + 235, WINDOW_HEIGHT // 2 - 80), "CHECKLIST", self.get_font(64), 
+                                    COLORS['white'], COLORS['white'], COLORS['black'], 2) # # made hover color for settings text white so visually, 
+                                  # color doesn't change when mouse moves over it
+
+            username_length_label = Button(None,
+                                    (WINDOW_WIDTH // 2 + 235, WINDOW_HEIGHT // 2 - 12), "- USERNAME BETWEEN 3-10 CHARACTERS", self.get_font(35), 
+                                    COLORS['white'], COLORS['white'], COLORS['black'], 2) # # made hover color for settings text white so visually, 
+                                  # color doesn't change when mouse moves over it
+
+            password_length_label = Button(None,
+                                    (WINDOW_WIDTH // 2 + 235, WINDOW_HEIGHT // 2 + 56), "- PASSWORD BETWEEN 12-15 CHARACTERS", self.get_font(35), 
+                                    COLORS['white'], COLORS['white'], COLORS['black'], 2) # # made hover color for settings text white so visually, 
+                                  # color doesn't change when mouse moves over it
+
+            alphanumeric_label = Button(None,
+                                    (WINDOW_WIDTH // 2 + 235, WINDOW_HEIGHT // 2 + 124), "- ALPHANUMERIC CHARACTERS", self.get_font(35), 
+                                    COLORS['white'], COLORS['white'], COLORS['black'], 2) # # made hover color for settings text white so visually, 
+                                  # color doesn't change when mouse moves over it
+
+            password_special_char_label = Button(None,
+                                    (WINDOW_WIDTH // 2 + 235, WINDOW_HEIGHT // 2 + 192), "- PASSWORD CONTAINS SPECIAL CHAR", self.get_font(35), 
+                                    COLORS['white'], COLORS['white'], COLORS['black'], 2) # # made hover color for settings text white so visually, 
+                                  # color doesn't change when mouse moves over it
+
             # iterate through all buttons to change color, update if hovered over or clicked to reduce code repetition
-            for button in [signup_back_button, self.cog_button]:
+            for button in [sign_up_text, signup_back_button, create_button, login_button, self.cog_button, username_label, password_label, 
+                           username_length_label, password_length_label, alphanumeric_label, password_special_char_label, 
+                           checklist_label]:
                 button.hover(mouse_pos)
                 button.update(self.display_surface)
 
+            elapsed_time = pygame.time.get_ticks() - start_timer
+            if elapsed_time > 50000000000000000000000: # after 5 seconds, switch to play screen
+                return self.loading() # return used to fully break out of this loop, preventing infinite loops when switching between screens
+
             # event loop constantly run in this screen to check for quit or button clicks
-            for event in pygame.event.get():
+            events = pygame.event.get()
+            for event in events:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
@@ -137,9 +193,14 @@ class Game:
                         self.main_menu()
                     if self.cog_button.checkForInput(mouse_pos):
                         self.settings()
-            
-            pygame.display.update()
 
+            # update and check the input of all Textbox objects
+            username_textbox.check_input(events)
+            username_textbox.update()
+            password_textbox.check_input(events)
+            password_textbox.update()
+
+            pygame.display.update()
             self.clock.tick(60)
     
     def loading(self):
@@ -486,7 +547,8 @@ class Game:
             'regular' : pygame.font.Font(("graphics/fonts/PixeloidSans.ttf"), 18), # regular text at 18px size and Pixeloid Sans font
             'small' : pygame.font.Font(("graphics/fonts/PixeloidSans.ttf"), 14), # small text at 14px size and Pixeloid Sans font
             'bold' : pygame.font.Font(("graphics/fonts/dogicapixelbold.otf"), 20), # bold text at 20px size and Dogica Pixel Bold font
-            'title': pygame.font.Font("graphics/fonts/PixelifySans-Bold.ttf", 125)
+            'title': pygame.font.Font("graphics/fonts/PixelifySans-Bold.ttf", 125),
+            'credentials' : pygame.font.Font(("graphics/fonts/PixeloidSans.ttf"), 42)
         }
 
         self.match_bg_frames = import_folder_dict("graphics/backgrounds")
