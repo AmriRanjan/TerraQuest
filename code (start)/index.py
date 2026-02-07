@@ -152,7 +152,7 @@ class MonsterIndex:
                         (bar_data['left'], bar_data['top'])) # width and height obtained from dictionary
         draw_stats_bars(self.display_surface, healthbar_rect, monster.health, monster.get_stat('max_health'), COLORS['red'], COLORS['black'])
         # value is current health, while end of bar is the maximum health.
-        hp_text = self.fonts['regular'].render(f'HP: {int(monster.health)}/{int(monster.get_stat('max_health'))}', False, COLORS['white'])
+        hp_text = self.fonts['regular'].render(f"HP: {int(monster.health)}/{int(monster.get_stat('max_health'))}", False, COLORS['white'])
         # show fraction of the current health over the total health
         hp_rectangle = hp_text.get_frect(midleft = healthbar_rect.midleft + vector(10,0))
         self.display_surface.blit(hp_text, hp_rectangle) 
@@ -161,7 +161,7 @@ class MonsterIndex:
                         (bar_data['right'], bar_data['top'])) # width and height obtained from dictionary
         draw_stats_bars(self.display_surface, energybar_rect, monster.energy, monster.get_stat('max_energy'), COLORS['blue'], COLORS['black'])
         # value is current energy, while end of bar is the maximum energy.
-        ep_text = self.fonts['regular'].render(f'EP: {int(monster.energy)}/{int(monster.get_stat('max_energy'))}', False, COLORS['white'])
+        ep_text = self.fonts['regular'].render(f"EP: {int(monster.energy)}/{int(monster.get_stat('max_energy'))}", False, COLORS['white'])
         # show fraction of the current energy over the total energy
         ep_rectangle = hp_text.get_frect(midleft = energybar_rect.midleft + vector(10,0))
         self.display_surface.blit(ep_text, ep_rectangle)

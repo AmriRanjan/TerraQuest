@@ -46,7 +46,7 @@ class Entity(pygame.sprite.Sprite):
                 self.facing_direction = 'right' if self.direction.x > 0 else 'left'
             if self.direction.y != 0:
                 self.facing_direction = 'down' if self.direction.y > 0 else 'up' 
-        return f'{self.facing_direction}{'' if moving else '_idle'}' # if it is idle, then return the direction object faces, but idle version
+        return f"{self.facing_direction}{'' if moving else '_idle'}" # if it is idle, then return the direction object faces, but idle version
  
     def block(self):
         self.blocked = True
@@ -81,7 +81,7 @@ class NPC(Entity):
         self.facing_direction = choice(self.viewing_directions)
     
     def get_dialog(self):
-        return self.trainer_data['dialog'][f'{'defeated' if self.trainer_data['defeated'] else 'default'}']
+        return self.trainer_data['dialog'][f"{'defeated' if self.trainer_data['defeated'] else 'default'}"]
         # f-string used to select which type of dialog wanted depending on the value of the defeated key-value pair in self.trainer_data
 
     def update(self, dt):
