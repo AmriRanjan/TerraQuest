@@ -50,6 +50,8 @@ class Database():
                 name TEXT NOT NULL,
                 level INTEGER NOT NULL,
                 xp INTEGER NOT NULL,
+                health INTEGER NOT NULL,
+                energy INTEGER NOT NULL,
                 FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
             );
                         
@@ -80,7 +82,6 @@ class Database():
         hash_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
         self.connect()
         self.cursor.execute("INSERT INTO users (username,password_hash, score) VALUES (?,?,0)", (username,hash_password))
-        # user_id = self.cursor.lastrowid # the last row is the new user_id
         self.close_connection()
         return
     
@@ -151,10 +152,10 @@ class Database():
 
     # MONSTER queries
 
-    def add_monster(self, user_id, name, level, xp):
+    def add_monster(self, user_id, name, level, xp, health, energy):
         # add monsters linked to specific user
         self.connect()
-        self.cursor.execute("INSERT INTO MONSTERS (user_id,name,level,xp) VALUES (?,?,?,?)", (user_id,name,level,xp))
+        self.cursor.execute("INSERT INTO MONSTERS (user_id,name,level,xp, health, energy) VALUES (?,?,?,?,?,?)", (user_id,name,level,xp, health, energy))
 
         # store the monster's unique ID for future updates
         monster_id = self.cursor.lastrowid
@@ -165,13 +166,13 @@ class Database():
         # retrieve all the monsters owned by a user
         # order them to ensure consistent display
         self.connect()
-        self.cursor.execute("SELECT monster_id, name, level, xp FROM MONSTERS WHERE user_id = ? ORDER BY monster_id", (user_id,))
+        self.cursor.execute("SELECT monster_id, name, level, xp, health, energy FROM MONSTERS WHERE user_id = ? ORDER BY monster_id", (user_id,))
         rows = self.cursor.fetchall()
         self.close_connection()
         return rows
     
-    def update_monster(self, monster_id, level, xp):
+    def update_monster(self, monster_id, level, xp, health, energy):
         # update a unique monster's level and experience after matches
         self.connect()
-        self.cursor.execute("UPDATE monsters SET level = ?, xp = ? WHERE monster_id = ?", (level, xp, monster_id))
+        self.cursor.execute("UPDATE monsters SET level = ?, xp = ?, health = ?, energy = ? WHERE monster_id = ?", (level, xp, health, energy, monster_id))
         self.close_connection()

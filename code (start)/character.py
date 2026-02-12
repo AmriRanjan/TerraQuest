@@ -64,7 +64,7 @@ class Entity(pygame.sprite.Sprite):
 
 # creating sprite which consists of position rectangle and graphic surface by inheriting from the parent class Entity
 class NPC(Entity):
-    def __init__(self, pos, frames, groups, facing_direction, trainer_data, nurse): # satisfy parameters of parent class Sprite
+    def __init__(self, pos, frames, groups, facing_direction, trainer_data, character_id, nurse): # satisfy parameters of parent class Sprite
         super().__init__(pos, frames, groups, facing_direction) # initialising parent constructor
         self.trainer_data = trainer_data
         self.timers = {
@@ -76,6 +76,8 @@ class NPC(Entity):
         
         self.viewing_directions = trainer_data['directions']
         self.in_dialog = False
+        
+        self.character_id = character_id
 
     def random_viewing_direction(self):
         self.facing_direction = choice(self.viewing_directions)

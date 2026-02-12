@@ -7,16 +7,17 @@ from random import choice
 from button import Button
 
 class Match:
-    def __init__(self, player_monsters, opponent_monsters, monster_frames, match_bg_surf, fonts, end_match, NPC):
+    def __init__(self, player_monsters, opponent_monsters, monster_frames, match_bg_surf, fonts, end_match, NPC, db, user_id, monster_ids, sounds):
         self.display_surface = pygame.display.get_surface() # surface for the battle UI to pop up on
         self.match_bg_surf = match_bg_surf
         self.monster_frames = monster_frames
         self.fonts = fonts
         self.monster_data = {'player': player_monsters, 'opponent': opponent_monsters} 
+        # segregate the dictionaries for the player and opponent monsters in one central dictionary for easy access
         self.end_match = end_match
         self.NPC = NPC
         self.can_catch = self.NPC is None
-        # segregate the dictionaries for the player and opponent monsters in one central dictionary for easy access
+        self.sounds = sounds
 
         self.match_sprites = MatchSprites() # a group for when changes need to be made to both the player and opponent monsters automatically, saving time
         self.player_sprites = pygame.sprite.Group() # separate group just for the player's monsters so we can modify them separately when wanted
@@ -41,6 +42,11 @@ class Match:
         # TEXT INITIALISATION
         self.title = None
         self.description = None
+
+        # DATABASE INITIALISATION
+        self.db = db
+        self.userid = user_id
+        self.monster_ids = monster_ids # hold the monster_id of each monster so health and energy and xp changes can be made to database
 
         self.setup()
 
@@ -113,6 +119,8 @@ class Match:
                                 index = len(self.monster_data['player'])
                                 self.monster_data['player'][index] = target_sprite.monster 
                                 # add the unique instance of Monster, with all its details, to monster index so the exact same monster is added to player's collection
+                                self.monster_ids.append(self.db.add_monster(self.userid, target_sprite.monster.name, target_sprite.monster.level, 0, 
+                                                                            target_sprite.monster.health, target_sprite.monster.energy))
                                 self.update_all_monsters('unpaused')
                                 target_sprite.kill() # remove the monster sprite from its groups to stop it being drawn and updated in match - it has been captured
                                 self.selection_mode = None
@@ -177,6 +185,7 @@ class Match:
         # animation
         MoveSprite(target_sprite.rect.center, self.monster_frames['attacks'][ATTACK_DATA[move]['animation']], self.match_sprites)
         # each frame of the attack animation is blitted at the center of the target monster
+        self.sounds[ATTACK_DATA[move]['animation']].play()
 
         # dealing damage, considering defense stat of target and type advantages
         move_element = ATTACK_DATA[move]['element'] # element of the move being used

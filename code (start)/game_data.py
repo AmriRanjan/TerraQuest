@@ -18,7 +18,7 @@ TRAINER_DATA = {
 		'biome': 'sand'
 		},
 	'o3': {
-		'monsters': {0: ('Vyperion', 30), 1: ('Chuchu', 36), 2: ('Purphant', 32)},
+		'monsters': {0: ('Vyperion', 16), 1: ('Chuchu', 15), 2: ('Purphant', 19)},
 		'dialog': {
 			'default': ['I love skating!', 'FIGHT!'], 
 			'defeated': ['Good luck with the boss', 'It\'s no mean feat']},

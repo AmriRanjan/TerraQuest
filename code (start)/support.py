@@ -178,3 +178,11 @@ def attack_importer(*path): # imports all attack animations from a folder into a
 			image_name = image.split('.')[0]
 			attack_dict[image_name] = list(import_tilemap(4, 1, folder_path, image_name).values()) # each attack animation has 4 columns and 1 row in its tilemap
 	return attack_dict
+
+def audio_import(*path):
+	files = {}
+	for folder_path, _, file_names in walk(join(*path)):
+		for each_file_name in file_names:
+			full_path = join(folder_path, each_file_name)
+			files[each_file_name.split('.')[0]] = pygame.mixer.Sound(full_path)
+	return files
